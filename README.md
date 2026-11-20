@@ -2,6 +2,8 @@
 
 ITP-Projekt „3D-Objekt im Web“ mit Blender, Three.js, Threlte, Svelte 5, Tailwind CSS und Tone.js.
 
+**Website:** https://itp-projekt-beta.vercel.app
+
 ## Starten
 
 Node.js (Version 20 oder neuer) installieren, dann:
@@ -13,11 +15,11 @@ npm run dev
 
 Die Adresse aus dem Terminal im Browser öffnen (meistens http://localhost:5173).
 
-## Online stellen (GitHub Pages)
+## Online
 
-1. Neues Repository auf GitHub anlegen und diesen Ordner hochladen (Branch `main`).
-2. Auf GitHub: **Settings > Pages > Source: GitHub Actions**.
-3. Nach 1 bis 2 Minuten ist die Seite online: `https://DEIN-NAME.github.io/REPO-NAME/`
+Die Website läuft auf Vercel: https://itp-projekt-beta.vercel.app
+
+Bei jedem Push auf `main` baut Vercel die Seite automatisch neu.
 
 ## Highlights
 
@@ -39,7 +41,7 @@ Die Adresse aus dem Terminal im Browser öffnen (meistens http://localhost:5173)
 - `src/lib/Goldstaub.svelte`: schwebender Goldstaub
 - `src/lib/Urkunde.svelte`: die Urkunde
 - `public/models/piano.glb`: das 3D-Modell
-- `public/images/`: die 3 Renderings (eigene Bilder hier mit gleichem Namen ersetzen)
+- `public/images/`: die 3 Renderings (`Untitled.png`, `Untitled3.png`, `Untitled4.png`)
 
 ## Quellen
 
