@@ -1,6 +1,8 @@
 <script>
   import Konfigurator from './lib/Konfigurator.svelte'
   import Ornament from './lib/Ornament.svelte'
+  import Zeitleiste from './lib/Zeitleiste.svelte'
+  import Fragen from './lib/Fragen.svelte'
   import { ui } from './lib/zustand.svelte.js'
   import { starteKonzert, stoppeMelodie, spieleNote } from './lib/klang.js'
 
@@ -23,8 +25,10 @@
   <nav class="mt-3 flex flex-wrap justify-center gap-x-8 gap-y-2 text-lg" aria-label="Hauptmenü">
     <a class="hover:text-gold-dunkel" href="#konfigurator">Konfigurator</a>
     <a class="hover:text-gold-dunkel" href="#klang">Klang</a>
+    <a class="hover:text-gold-dunkel" href="#geschichte">Geschichte</a>
     <a class="hover:text-gold-dunkel" href="#galerie">Galerie</a>
     <a class="hover:text-gold-dunkel" href="#atelier">Atelier</a>
+    <a class="hover:text-gold-dunkel" href="#fragen">Fragen</a>
   </nav>
 </header>
 
@@ -96,6 +100,15 @@
     </div>
   </section>
 
+  <section id="geschichte" class="mx-auto max-w-5xl scroll-mt-6 px-6 py-20">
+    <div class="text-center">
+      <h2 class="text-5xl">Eine kleine Geschichte des Klaviers</h2>
+      <Ornament art="linie" class="mx-auto mt-5 h-6 w-60 text-gold-dunkel" />
+      <p class="mx-auto mt-5 max-w-xl">Von Florenz über Wien und Paris bis in Ihren Browser.</p>
+    </div>
+    <Zeitleiste />
+  </section>
+
   <section id="galerie" class="mx-auto max-w-6xl scroll-mt-6 px-6 py-20">
     <div class="text-center">
       <h2 class="text-5xl">Aus dem Atelier</h2>
@@ -151,6 +164,12 @@
         </li>
       </ol>
     </div>
+  </section>
+
+  <section id="fragen" class="mx-auto max-w-3xl scroll-mt-6 px-6 py-20">
+    <h2 class="text-center text-5xl">Fragen und Antworten</h2>
+    <Ornament art="linie" class="mx-auto mt-5 h-6 w-60 text-gold-dunkel" />
+    <Fragen />
   </section>
 </main>
 
