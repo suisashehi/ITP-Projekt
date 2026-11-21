@@ -151,16 +151,14 @@
     const treffer = strahl.intersectObject(gltf.nodes.Keyboard, true)[0]
     if (!treffer) return
     const note = treffer.object.name.replace('Key_', '') // "Key_C4" -> "C4"
-    drueckeTaste(note)
-    spieleNote(note)
-    ui.note = note
+    spieleNote(note) // spielt den Ton, die Taste bewegt sich über beiTaste
   }
   $effect(() => {
     renderer.domElement.addEventListener('pointerdown', klick)
     return () => renderer.domElement.removeEventListener('pointerdown', klick)
   })
 
-  // Bei "Für Elise" bewegen sich die Tasten mit
+  // Jede gespielte Note (Klick, Computertastatur, Melodie) drückt die 3D-Taste
   $effect(() => beiTaste(drueckeTaste))
 
   // ---------- Kerzen flackern
