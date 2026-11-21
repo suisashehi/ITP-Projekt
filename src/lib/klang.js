@@ -1,16 +1,15 @@
 // Klavierklang mit Tone.js: echte Flügel-Aufnahmen (Salamander Grand Piano, CC BY 3.0).
 // Es gibt eine Aufnahme pro kleiner Terz, Tone.js berechnet die Töne dazwischen.
 import * as Tone from 'tone'
-import { FUER_ELISE } from './data.js'
+import { MELODIEN } from './melodien.js'
 import { ui, config } from './zustand.svelte.js'
-
-const SECHZEHNTEL = 0.19 // Sekunden pro Sechzehntelnote
 
 let sampler = null
 let timer = []
 const zuhoerer = new Set()
 
-// Die 3D-Szene meldet sich hier an, damit sich die Tasten bei der Melodie bewegen
+// Wer wissen will, welche Note gerade spielt, meldet sich hier an
+// (3D-Tasten, kleines Klavier, Effekte)
 export function beiTaste(funktion) {
   zuhoerer.add(funktion)
   return () => zuhoerer.delete(funktion)
@@ -39,40 +38,45 @@ export function ladeKlang() {
   sampler.volume.value = -5
 }
 
-export async function spieleNote(note, staerke = 0.8, dauer = 1.4) {
-  await Tone.start() // Browser erlauben Ton erst nach einem Klick
-  if (!ui.klangBereit) return
+// Einen Ton spielen und allen Zuhörern Bescheid geben
+function spiele(note, staerke, dauer) {
   sampler.triggerAttackRelease(note, dauer, Tone.now(), staerke)
+  zuhoerer.forEach((funktion) => funktion(note))
+  ui.note = note
 }
 
-export async function spieleMelodie() {
+export async function spieleNote(note, staerke = 0.8, dauer = 1.4) {
+  await Tone.start() // Browser erlauben Ton erst nach einem Klick
+  if (ui.klangBereit) spiele(note, staerke, dauer)
+}
+
+export async function spieleMelodie(melodie = MELODIEN[0]) {
   await Tone.start()
   if (!ui.klangBereit) return
   stoppeMelodie()
   ui.spielt = true
   let ende = 0
-  for (const [zeit, note, laenge] of FUER_ELISE) {
-    const start = zeit * SECHZEHNTEL * 1000
-    const dauer = laenge * SECHZEHNTEL * 1000
+  for (const [zeit, note, laenge] of melodie.noten) {
+    const start = zeit * melodie.takt * 1000 // takt = Sekunden pro Zeiteinheit
+    const dauer = laenge * melodie.takt * 1000
     const tief = note.endsWith('2') || note.endsWith('3')
-    timer.push(setTimeout(() => {
-      sampler.triggerAttackRelease(note, (dauer / 1000) * 1.6, Tone.now(), tief ? 0.5 : 0.72)
-      zuhoerer.forEach((funktion) => funktion(note)) // Taste in 3D drücken
-      ui.note = note
-    }, start))
+    timer.push(setTimeout(() => spiele(note, tief ? 0.5 : 0.72, (dauer / 1000) * 1.6), start))
     ende = Math.max(ende, start + dauer)
   }
-  timer.push(setTimeout(() => (ui.spielt = false), ende + 600))
+  timer.push(setTimeout(() => {
+    ui.spielt = false
+    ui.bravo++ // Ende erreicht: Applaus!
+  }, ende + 600))
 }
 
 // Konzert: Kerzenlicht an, Deckel auf, Kamera zur Gesamtansicht, Musik ab
-export function starteKonzert() {
+export function starteKonzert(melodie = MELODIEN[0]) {
   config.licht = 'kerze'
   config.kandelaber = true
   config.deckel = 1
   ui.ansicht = 'gesamt'
   ui.ansichtZaehler++
-  spieleMelodie()
+  spieleMelodie(melodie)
 }
 
 export function stoppeMelodie() {

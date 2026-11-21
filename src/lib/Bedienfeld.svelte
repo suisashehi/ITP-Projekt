@@ -6,8 +6,10 @@
   import { config, ui, zuruecksetzen } from './zustand.svelte.js'
   import { LACK, OBERFLAECHE, METALL, INNENRAUM, POLSTER, KLAVIATUR, GRUNDPREIS, KANDELABER_PREIS, finde } from './data.js'
   import { starteKonzert, stoppeMelodie } from './klang.js'
+  import { MELODIEN } from './melodien.js'
 
-  let urkunde // die Urkunde (Dialog)
+  let urkunde = $state() // die Urkunde (Dialog)
+  let melodie = $state('elise') // welches Stück beim Konzert gespielt wird
   const euro = new Intl.NumberFormat('de-AT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
 
   // Preis = Grundpreis + Aufpreise aller gewählten Optionen
@@ -48,6 +50,8 @@
       </label>
     </fieldset>
 
+    <Knopfwahl titel="Musik für das Konzert" liste={MELODIEN} bind:wert={melodie} />
+
     <fieldset>
       <legend class="gruppe-titel">Ausstattung und Licht</legend>
       <label class="schalter">
@@ -74,7 +78,7 @@
       {#if ui.spielt}
         <button type="button" class="knopf-voll col-span-2" onclick={stoppeMelodie}>Musik anhalten</button>
       {:else}
-        <button type="button" class="knopf-voll col-span-2" disabled={!ui.klangBereit} onclick={starteKonzert}>
+        <button type="button" class="knopf-voll col-span-2" disabled={!ui.klangBereit} onclick={() => starteKonzert(finde(MELODIEN, melodie))}>
           {ui.klangBereit ? 'Konzert im Kerzenschein' : 'Klang wird geladen'}
         </button>
       {/if}

@@ -10,8 +10,9 @@ export const ui = $state({
   ansicht: 'gesamt', // aktive Kamera-Ansicht
   ansichtZaehler: 0, // erhöht sich bei jedem Klick, damit dieselbe Ansicht erneut angefahren wird
   klangBereit: false,
-  spielt: false, //     läuft gerade "Für Elise"?
+  spielt: false, //     läuft gerade Musik?
   note: '', //          zuletzt gespielte Note
+  bravo: 0, //          zählt fertig gespielte Konzerte (für den Applaus)
   hinweis: '' //        kurze Meldung unten am Bildschirmrand
 })
 
